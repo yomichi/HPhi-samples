@@ -1,9 +1,14 @@
 module BerryPhase
 
-export interall, eigenvec, berryphase
+export inputfiles, interall, eigenvec, berryphase
+export Model
+
+abstract Model
+include("bond.jl")
+include("dimer.jl")
+include("alt-chain.jl")
 
 include("mkparams.jl")
-include("mkInterAll.jl")
 
 function eigenvec()
   const io = open(joinpath("output", "zvo_eigenvec_0_rank_0.dat"))
@@ -18,6 +23,7 @@ function eigenvec()
 end
 
 function gauge_fix!(vec, ref)
+  return vec
   ip = cis(angle(dot(vec, ref)))
   @inbounds for i in 1:length(vec)
     vec[i] *= ip
@@ -26,45 +32,48 @@ function gauge_fix!(vec, ref)
 end
 
 function normalize!(vec)
-  s = dot(vec,vec)
+  s = sum(abs2(vec))
   s = 1.0/sqrt(s)
   @inbounds for i in 1:length(vec)
     vec[i] *= s
   end
 end
 
-function berryphase(L::Integer, Jz::Real;
-                    delta::Real=0.0, Jxy::Real=Jz,
-                    M::Integer=10)
-
-  @show delta
-
-  InterAll(L, Jz, delta=delta, Jxy=Jxy, t=0.0)
-  run(`../HPhi -e namelist.def`)
+function berryphase(model::Model, M::Integer=10; canonical::Bool=true)
+  inputfiles(num_sites(model), canonical=canonical)
+  interall(model, 0.0)
+  run(pipeline(`../HPhi -e namelist.def`, stdout="std.out", stderr="std.err", append=true))
 
   bp = 0.0
   vec0 = eigenvec()
   N = length(vec0)
-  #=
-  ref = rand(Complex128, N)
+
+  ref = [complex(float(i)) for i in 1:N]
+
+  #  ref = zeros(Complex128, N)
+  #  ref[end] = one(Complex128)
+
+  # ref = rand(Complex128, N)
+
   normalize!(ref)
   gauge_fix!(vec0, ref)
-  =#
   vec_old = deepcopy(vec0)
   dt = 2pi/M
   for i in 1:(M-1)
-    InterAll(L, Jz, delta=delta, Jxy=Jxy, t=i*dt)
-    run(`../HPhi -e namelist.def`)
+    t = i*dt
+    interall(model, t)
+    run(pipeline(`../HPhi -e namelist.def`, stdout="std.out", stderr="std.err", append=true))
     vec_new = eigenvec()
-    # gauge_fix!(vec_new, ref)
+    gauge_fix!(vec_new, ref)
     ip = zero(Complex128)
-    @inbounds for i in 1:N
-      ip += vec_new[i]' * vec_old[i]
-      vec_old[i] = vec_new[i]
+    @inbounds for j in 1:N
+      ip += vec_new[j]' * vec_old[j]
+      vec_old[j] = vec_new[j]
     end
-    bp *= angle(ip)
+    bp += angle(ip)
   end
-  bp += angle(dot(vec0, vec_old))
+  ip = dot(vec0, vec_old)
+  bp += angle(ip)
   return mod(bp, 2pi)
 end
 
