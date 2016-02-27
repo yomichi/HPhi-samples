@@ -2,8 +2,7 @@
 
 hphi="../HPhi"
 
-#Ls="4 6 8 10"
-Ls="10"
+Ls="4 6 8"
 hs=`seq 0.0 0.1 10.0`
 
 for L in ${Ls[@]}; do
