@@ -6,4 +6,3 @@ lattice = "chain lattice"
 J = 1.0
 2S = 2
 D= 4.0
-L = 8
