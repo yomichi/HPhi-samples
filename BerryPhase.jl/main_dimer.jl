@@ -3,9 +3,8 @@ include("berryphase.jl")
 using BerryPhase
 
 const M = (length(ARGS) > 0 ? parse(Int, ARGS[1]) : 10)
-const canonical = false
 
-bp = berryphase(dimer(1.0), M, canonical=canonical)
+bp = berryphase(dimer(1.0), M, canonical=false)
 
 println("γ/π = ", bp/pi)
 
