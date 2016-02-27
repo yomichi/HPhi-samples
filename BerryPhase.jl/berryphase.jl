@@ -7,6 +7,7 @@ abstract Model
 include("bond.jl")
 include("dimer.jl")
 include("alt-chain.jl")
+include("alt-ladder.jl")
 
 include("mkparams.jl")
 
