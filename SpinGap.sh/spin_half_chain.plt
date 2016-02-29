@@ -1,5 +1,5 @@
 f(x) = a + b*x
-fit f(x) 'spin_half.dat' u (1/$1):2 via a,b
+fit f(x) 'spin_half_chain.dat' u (1/$1):2 via a,b
 
 set xr [0:]
 set yr [0:]
@@ -10,7 +10,7 @@ set size 0.7
 set key off
 
 set term postscript eps enhanced color solid
-set out 'spin_half.eps'
+set out 'spin_half_chain.eps'
 
-pl f(x) lt -1, 'spin_half.dat'u (1/$1):2 w p pt 5 ps 1.5 lt 3
+pl f(x) lt -1, 'spin_half_chain.dat'u (1/$1):2 w p pt 5 ps 1.5 lt 3
 

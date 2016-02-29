@@ -1,4 +1,4 @@
-f(x) = a + b*x
+f(x) = a + b*x*x
 fit f(x) 'spin_half_ladder.dat' u (1/$1):2 via a,b
 
 set xr [0:]

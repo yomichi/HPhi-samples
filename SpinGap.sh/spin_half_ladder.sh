@@ -19,7 +19,8 @@ for L in ${Ls[@]}; do
   echo "J2 = 0.0" >> StdFace.def
   echo "J2'= 0.0" >> StdFace.def
   echo "2S = 1" >> StdFace.def
-  gap=$($hphi -S StdFace.def | awk '$1=="stp" {print $5-$4}' | tail -n 1)
+  $hphi -S StdFace.def
+  gap=$(tail -n 1 output/zvo_Lanczos_Step.dat | awk '{print $5-$4}')
   echo "$L $gap" | tee -a $output
 done
 
