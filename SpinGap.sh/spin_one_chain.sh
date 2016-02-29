@@ -19,5 +19,3 @@ for L in ${Ls[@]}; do
 done
 
 gnuplot spin_one_chain.plt
-epspdf spin_one_chain.eps
-

@@ -19,5 +19,4 @@ for L in ${Ls[@]}; do
 done
 
 gnuplot spin_half_chain.plt
-epspdf spin_half_chain.eps
 

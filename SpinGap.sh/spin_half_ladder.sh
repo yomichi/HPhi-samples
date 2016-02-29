@@ -25,5 +25,4 @@ for L in ${Ls[@]}; do
 done
 
 gnuplot spin_half.plt
-epspdf spin_half.eps
 
