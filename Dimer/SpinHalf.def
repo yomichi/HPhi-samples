@@ -1,0 +1,6 @@
+model = "SpinGC"
+lattice = "chain lattice"
+method = "FullDiag"
+2S = 1
+L = 2
+J = 0.5
