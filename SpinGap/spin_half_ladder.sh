@@ -1,7 +1,5 @@
 #!/bin/sh
 
-hphi="../HPhi"
-
 Ls="4 6 8 10 12"
 
 output="spin_half_ladder.dat"
@@ -19,7 +17,7 @@ for L in ${Ls[@]}; do
   echo "J2 = 0.0" >> StdFace.def
   echo "J2'= 0.0" >> StdFace.def
   echo "2S = 1" >> StdFace.def
-  $hphi -S StdFace.def
+  ../HPhi.sh -S StdFace.def
   gap=$(tail -n 1 output/zvo_Lanczos_Step.dat | awk '{print $5-$4}')
   echo "$L $gap" | tee -a $output
 done
