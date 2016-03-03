@@ -7,6 +7,7 @@ end
 dimer(Jz::Real, Jxy::Real) = Dimer(Jz, Jxy)
 dimer(J::Real) = dimer(J,J)
 num_sites(::Dimer) = 2
+num_bonds(::Dimer) = 1
 
 function interall(dimer::Dimer, t::Real = 0.0)
   const io = open("interall.def", "w")
@@ -14,7 +15,7 @@ function interall(dimer::Dimer, t::Real = 0.0)
   z = 0.25dimer.Jz
   xy = 0.5dimer.Jxy*cis(t)
 
-  print_bond(io, 0, 1, z, xy)
+  bond(io, 0, 1, z, xy)
 
   close(io)
 end

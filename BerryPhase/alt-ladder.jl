@@ -35,23 +35,23 @@ function interall(ladder::AltLadder, t::Real=0.0)
 
   twist = cis(t)
   cone = one(Complex128)
-  print_bond(io, 0, L, ladder.rz, ladder.rx * ifelse(ladder.twistedmask[1], twist, cone))
-  print_bond(io, 0, 1, ladder.lz[1], ladder.lx[1] * ifelse(ladder.twistedmask[2], twist, cone))
-  print_bond(io, L, L+1, ladder.lz[2], ladder.lx[2] * ifelse(ladder.twistedmask[3], twist, cone))
+  bond(io, 0, L, ladder.rz, ladder.rx * ifelse(ladder.twistedmask[1], twist, cone))
+  bond(io, 0, 1, ladder.lz[1], ladder.lx[1] * ifelse(ladder.twistedmask[2], twist, cone))
+  bond(io, L, L+1, ladder.lz[2], ladder.lx[2] * ifelse(ladder.twistedmask[3], twist, cone))
 
   @inbounds for i in 1:(L-1)
     j = (i+1)%L
 
     parity = i%2
     # first leg
-    print_bond(io, i, j, ladder.lz[parity+1], ladder.lx[parity+1])
+    bond(io, i, j, ladder.lz[parity+1], ladder.lx[parity+1])
     # second leg
-    print_bond(io, i+L, j+L, ladder.lz[2-parity], ladder.lx[2-parity])
+    bond(io, i+L, j+L, ladder.lz[2-parity], ladder.lx[2-parity])
   end
 
   ## rung
   @inbounds for i in 1:(L-1)
-    print_bond(io, i, i+L, ladder.rz, ladder.rx)
+    bond(io, i, i+L, ladder.rz, ladder.rx)
   end
 
   close(io)

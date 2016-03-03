@@ -22,12 +22,12 @@ function interall(chain::AltChain, t::Real=0.0)
   print_header(io, chain)
 
   ## twisted bond
-  print_bond(io, 0, 1, chain.z[1], chain.xy[1]*cis(t))
+  bond(io, 0, 1, chain.z[1], chain.xy[1]*cis(t))
 
   @inbounds for i in 1:(chain.L-1)
     j = (i+1)%chain.L
     parity = (i%2)+1
-    print_bond(io, i, j, chain.z[parity], chain.xy[parity])
+    bond(io, i, j, chain.z[parity], chain.xy[parity])
   end
   close(io)
 end
