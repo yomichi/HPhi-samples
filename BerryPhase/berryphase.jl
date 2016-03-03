@@ -45,7 +45,6 @@ function berryphase(model::Model, M::Integer=10)
   dt = 2pi/M
   for i in 1:(M-1)
     t = i*dt
-    @show t
     interall(model, t)
     run(pipeline(`../HPhi -e namelist.def`, stdout="std.out", stderr="std.err", append=true))
     vec_new = eigenvec()

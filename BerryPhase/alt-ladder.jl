@@ -20,10 +20,10 @@ type AltLadder <: Model
     else
       error("twistedbond should be :rung, :plus_leg, or :minus_leg")
     end
-    lz = (0.25Jlz*(1.0+delta), 0.25Jlz*(1.0-delta))
-    lx = (0.5Jlx*complex(1.0+delta), 0.5Jlx*complex(1.0-delta))
-    rz = 0.25Jrz
-    rx = complex(0.5Jrx)
+    lz = (Jlz*(1.0+delta), Jlz*(1.0-delta))
+    lx = (Jlx*complex(1.0+delta), Jlx*complex(1.0-delta))
+    rz = Jrz
+    rx = complex(Jrx)
     new(S2, L, lz, lx, rz, rx, twistedmask, c)
   end
 end
