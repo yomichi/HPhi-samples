@@ -1,21 +1,22 @@
-function inputfiles(nsites::Integer; canonical::Bool = true)
+function generate_defs(model::Model)
   namelist()
-  calcmod(canonical)
-  modpara(nsites, canonical)
-  locspin(nsites)
+  calcmod()
+  modpara(num_sites(model))
+  locspin(model.S2, num_sites(model))
+  interall(model)
 end
 
-function calcmod(canonical::Bool)
+function calcmod()
   const io = open("calcmod.def", "w")
   println(io,
     """
     CalcType 0
-    CalcModel   $(ifelse(canonical, 1, 4))
+    CalcModel   4
     OutputEigenVec 1 """)
   close(io)
 end
 
-function modpara(nsites::Integer, canonical::Bool)
+function modpara(nsites::Integer)
   const io = open("modpara.def", "w")
   println(io,
   """
@@ -34,13 +35,10 @@ function modpara(nsites::Integer, canonical::Bool)
   exct           1
   LanczosEps     14
   LanczosTarget  1""")
-  if canonical
-    println(io, "2Sz            0")
-  end
   close(io)
 end
 
-function locspin(nsites::Integer)
+function locspin(S2::Integer, nsites::Integer)
   const io = open("locspin.def", "w")
   println(io,
   """
@@ -50,7 +48,7 @@ function locspin(nsites::Integer)
   === reserved
   === end of header """)
   for i in 0:(nsites-1)
-    println(io, i, " 1")
+    println(io, i, " ", S2)
   end
   close(io)
 end

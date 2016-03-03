@@ -8,8 +8,8 @@ const rungs = 1.2:0.1:1.7
 
 const M = (length(ARGS)>0 ? parse(Int, ARGS[1]) : 16)
 
-bp_leg(rung) = berryphase(altladder(L, 1.0, 1.0, delta, rung, rung, :plus_leg), M, canonical=false)
-bp_rung(rung) = berryphase(altladder(L, 1.0, 1.0, delta, rung, rung, :rung), M, canonical=false)
+bp_leg(rung) = berryphase(altladder(1, L, 1.0, 1.0, delta, rung, rung, :plus_leg), M)
+bp_rung(rung) = berryphase(altladder(1, L, 1.0, 1.0, delta, rung, rung, :rung), M)
 
 bp_legs = map(bp_leg, rungs)
 bp_rungs = map(bp_rung, rungs)

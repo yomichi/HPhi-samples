@@ -5,11 +5,12 @@ using BerryPhase
 const L = 8
 const Jz = 1.0
 const Jxy = 1.0
-const deltas = [-0.5, -0.1, 0.0, 0.1, 0.5]
 
-const M = (length(ARGS)>0 ? parse(Int, ARGS[1]) : 16)
+const deltas = [0.0, 0.2, 0.4, 0.6]
+const S2 = 2
+const M = 16
 
-bp(delta) = berryphase(altchain(L, Jz, Jxy, delta), M, canonical=false)
+bp(delta) = berryphase(altchain(S2, L, Jz, Jxy, delta), M)
 
 bps = map(bp, deltas)
 
