@@ -4,7 +4,18 @@ export inputfiles, interall, eigenvec, berryphase
 export Model
 
 abstract Model
-include("bond.jl")
+include("../util.jl/bond.jl")
+
+function header_interall(io, m::Model)
+  println(io,
+"""
+=== header
+NInterAll $(length(m.coeff) * num_bonds(m))
+=== reserved
+=== reserved
+=== end of header """)
+end
+
 include("dimer.jl")
 include("alt-chain.jl")
 include("alt-ladder.jl")
@@ -12,8 +23,8 @@ include("alt-ladder.jl")
 include("mkparams.jl")
 include("eigenvec.jl")
 
-function berryphase(model::Model, M::Integer=10; canonical::Bool=true)
-  inputfiles(num_sites(model), canonical=canonical)
+function berryphase(model::Model, M::Integer=10)
+  generate_defs(model)
   interall(model, 0.0)
   run(pipeline(`../HPhi -e namelist.def`, stdout="std.out", stderr="std.err", append=true))
 

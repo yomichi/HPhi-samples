@@ -1,31 +1,25 @@
 export Dimer, dimer
 
 type Dimer <: Model
+  S2 :: Int
   Jz :: Float64
   Jxy :: Float64
+  coeff :: BondCoeffs
+  function Dimer(S2, Jz, Jxy)
+    c = bond_coeffs(S2)
+    new(S2, Jz, Jxy, c)
+  end
 end
-dimer(Jz::Real, Jxy::Real) = Dimer(Jz, Jxy)
-dimer(J::Real) = dimer(J,J)
+dimer(S2::Integer, Jz::Real, Jxy::Real) = Dimer(S2,Jz, Jxy)
+dimer(S2::Integer, J::Real) = dimer(S2,J,J)
 num_sites(::Dimer) = 2
+num_bonds(::Dimer) = 1
 
 function interall(dimer::Dimer, t::Real = 0.0)
   const io = open("interall.def", "w")
-  print_header(io, dimer)
-  z = 0.25dimer.Jz
-  xy = 0.5dimer.Jxy*cis(t)
-
-  print_bond(io, 0, 1, z, xy)
+  header_interall(io, dimer)
+  bond(io, 0, 1, dimer.Jz, dimer.Jxy*cis(t), dimer.coeff)
 
   close(io)
-end
-
-function print_header(io, dimer::Dimer)
-println(io,
-"""
-=== header
-NInterAll 6
-=== reserved
-=== reserved
-=== end of header """)
 end
 
