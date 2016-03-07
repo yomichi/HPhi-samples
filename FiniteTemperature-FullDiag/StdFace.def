@@ -1,0 +1,6 @@
+model = "Spin"
+method = "FullDiag"
+lattice = "chain lattice"
+2S = 1
+J = 1.0
+L = 10
